@@ -5,9 +5,9 @@ from time import time as ti
 
 class Robot:
 	"""Creates Robot Class
-	
+
 	Expected Values:
-	
+
 	crush_motor = Motor(forward=23, backward=24)
 	crush_limit = Button(17)
 	retract_limit = Button(25)
@@ -17,7 +17,7 @@ class Robot:
 	disp_sda = 2
 	disp_scl = 3
 	"""
-	
+
 	def __init__(self, crush_pin=23, retract_pin=24, crush_limit=17, retract_limit=25, start_pin=16, e_stop_pin=12, lid_pin=4):
 		super(Robot, self).__init__()
 		self.motor = Motor(crush_pin, retract_pin)
@@ -102,7 +102,7 @@ class Robot:
 					sleep(3)
 					self.disp_text('Check for Jam', 'or Brkn switch!')
 					return False
-				else:				
+				else:
 					sleep(0.2)
 			self.motor.stop()
 			self.disp_text(cl=False, l2='Ready!')
@@ -111,11 +111,10 @@ class Robot:
 		else:
 			self.disp_text(cl=False, l2='Ready!')
 			return True
-	
+
 	def lid_check(self, n=10):
-		delay = ti() + n 
+		delay = ti() + n
 		if not self.lid_safe.is_pressed:
-			
 			self.disp_text('Close Lid!!')
 			while not self.lid_safe.is_pressed:
 				sleep(0.25)
@@ -141,12 +140,13 @@ class Robot:
 						sleep(3)
 						self.disp_text('Check for Jam!', j1='c')
 						return False
-					else:				
+					else:
 						sleep(0.2)
 				self.motor.stop()
 				self.disp_text(cl=False, l2='...Done!', j2='r')
 				sleep(0.5)
 				if self.home():
+					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 					return True
 			else:
 				self.disp_text('Crusher not set')

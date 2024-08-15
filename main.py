@@ -49,6 +49,7 @@ def main():
 		dave.disp_text('Power cycle', 'to reset')
 	else:
 		dave.disp_text('Press Start', 'to begin...', j1='c', j2='c')
+		dave.cycle()
 
 if __name__ == "__main__":
 	main()
