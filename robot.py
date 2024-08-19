@@ -215,8 +215,8 @@ class Robot:
 					self.disp_text(l2='Start released!', cl=False)
 					self._crush()
 				elif not self.lid_safe.value:
+					self.disp_text('Lid Open!')
 					while not self.lid_safe.is_pressed:
-						self.disp_text('Lid Open!')
 						if not self.led.is_active:
 							self.fade_led(state=1, fade_delay=2, background=False)
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
