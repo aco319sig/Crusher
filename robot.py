@@ -159,7 +159,6 @@ class Robot:
 				sleep(0.5)
 				if self.home():
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
-					self.fade_led(state=0, fade_delay=2, background=True)
 					return True
 			else:
 				self.disp_text('Crusher not set')
@@ -214,6 +213,7 @@ class Robot:
 				elif not first and second:
 					self.disp_text(l2='Start released!', cl=False)
 					self._crush()
+					self.fade_led(state=0, fade_delay=2, background=True)
 				elif first_lid and not second_lid:
 					self.disp_text('Lid Open!')
 					self.fade_led(state=1, fade_delay=2, background=False)
