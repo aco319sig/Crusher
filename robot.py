@@ -215,10 +215,10 @@ class Robot:
 					self.disp_text(l2='Start released!', cl=False)
 					self._crush()
 					self.fade_led(state=0, fade_delay=2, background=True)
-				elif first_lid and not second_lid:
+				elif not self.lid_safe.value:
 					self.disp_text('Lid Open!')
 					self.fade_led(state=1, fade_delay=2, background=False)
-				elif not first_lid and second_lid:
+				elif self.lid_safe.value:
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 					self.fade_led(state=0, fade_delay=2, background=False)
 
