@@ -152,8 +152,17 @@ class Robot:
 						sleep(3)
 						self.disp_text('Check for Jam!', j1='c')
 						return False
-					else:
-						sleep(0.2)
+					elif not self.lid_safe.is_pressed:
+						self.motor.stop()
+						self.disp_text('Close Lid!!')
+						while not self.lid_safe.is_pressed:
+							if ti() > delay:
+								self.disp_text(cl=False, l2='Timeout = 10 sec')
+								return False
+						self.disp_text(cl=False, l2='Lid is closed')
+						sleep(0.5)
+						self.disp_text(l1='Lid is closed', l2='Continuing', j2='r')
+					sleep(0.2)
 				self.motor.stop()
 				self.disp_text(cl=False, l2='...Done!', j2='r')
 				sleep(0.5)
