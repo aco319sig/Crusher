@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from time import sleep
-import sys
 import robot as R
 """
 Expected Values:
@@ -22,12 +21,13 @@ r_l_pin = 25
 l_pin = 4
 s_pin = 16
 e_pin = 12
+led_p = 26
 
 
 def main():
-	dave = R.Robot(crush_pin=motor_fwd_pin, retract_pin=motor_rev_pin, crush_limit=c_l_pin, retract_limit=r_l_pin, start_pin=s_pin, e_stop_pin=e_pin, lid_pin=l_pin)
-	print("Attributes of the Robot named 'Dave'")
-	print(dir(dave))
+	dave = R.Robot(crush_pin=motor_fwd_pin, retract_pin=motor_rev_pin, crush_limit=c_l_pin, retract_limit=r_l_pin, start_pin=s_pin, e_stop_pin=e_pin, lid_pin=l_pin, led_pin=led_p)
+	dave.disp_text('POST Complete')
+	sleep(1)
 	host_ip = dave.get_ip()
 	dave.disp_text('Host IP:', str(host_ip), j1='c', j2='c')
 	dave.estop_button.when_pressed = dave.e_stop
