@@ -198,8 +198,11 @@ class Robot:
 		self.fade_led(state=0, fade_delay=4, background=False)
 		sleep(1)
 		self.start_button.wait_for_press()
+		print('Start Pressed')
+		self.all_stop = False
 		self.disp_text('Restarting', 'Cycle', j1='c', j2='c')
 		sleep(3)
+		print('restarting cycle')
 		self.cycle()
 
 
