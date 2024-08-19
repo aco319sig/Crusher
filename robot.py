@@ -132,7 +132,7 @@ class Robot:
 					self.disp_text(cl=False, l2='Timeout = 10 sec')
 					return False
 			self.disp_text(cl=False, l2='Lid is closed')
-			self.fade_led(state=0, fade_delay=2, background=True)
+			self.fade_led(state=0, fade_delay=2, background=False)
 			sleep(0.5)
 			return True
 		else:
@@ -165,6 +165,7 @@ class Robot:
 				sleep(0.5)
 				if self.home():
 					self.disp_text('Press Start', 'Again!', j1='c', j2='c')
+					self.fade_led(state=0, fade_delay=2, background=False)
 				else:
 					self.disp_text('Check for Jam!')
 					sleep(1)
@@ -194,7 +195,7 @@ class Robot:
 		sleep(3)
 		self.disp_text('Power Cycle to', 'Continue', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
-		self.fade_led(state=0, fade_delay=4, background=True)
+		self.fade_led(state=0, fade_delay=4, background=False)
 		sleep(1)
 		sys.exit()
 
@@ -205,23 +206,20 @@ class Robot:
 		try:
 			while True:
 				first = self.start_button.value
-				first_lid = self.lid_safe.value
+				# first_lid = self.lid_safe.value
 				sleep(0.05)
 				second = self.start_button.value
-				second_lid = self.lid_safe.value
 				if first and not second:
 					self.disp_text('Start Pressed')
 				elif not first and second:
 					self.disp_text(l2='Start released!', cl=False)
 					self._crush()
-					self.fade_led(state=0, fade_delay=2, background=True)
-				elif first_lid and not second_lid:
-					self.disp_text('Lid Open!')
-					self.fade_led(state=1, fade_delay=2, background=False)
-				elif not first_lid and second_lid:
+				elif self.lid_safe.value:
+					while not self.lid_safe.is_pressed:
+						self.disp_text('Lid Open!')
+						self.fade_led(state=1, fade_delay=2, background=False)
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
-					if self.led.value:
-						self.fade_led(state=0, fade_delay=2, background=False)
+					self.fade_led(state=0, fade_delay=2, background=False)
 
 		except KeyboardInterrupt:
 			self.disp_text('Program Stop', 'By KBI', j2='c')
