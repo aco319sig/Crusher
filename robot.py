@@ -229,9 +229,8 @@ class Robot:
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 					self.fade_led(state=0, fade_delay=2, background=False)
 					bg_delay = ti() + 60
-				else:
-					if ti() > bg_delay:
-						self.lcd.lcd_backlight(0)
+				elif ti() > bg_delay:
+					self.lcd.lcd_backlight(0)
 
 
 		except KeyboardInterrupt:
