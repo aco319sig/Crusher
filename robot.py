@@ -194,7 +194,8 @@ class Robot:
 		sleep(3)
 		self.disp_text('Power Cycle to', 'Continue', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
-		self.fade_led(state=0, fade_delay=2, background=True)
+		self.fade_led(state=0, fade_delay=4, background=True)
+		sleep(1)
 		sys.exit()
 
 	def cycle(self):
