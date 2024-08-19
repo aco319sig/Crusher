@@ -159,6 +159,7 @@ class Robot:
 				sleep(0.5)
 				if self.home():
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
+					self.fade_led(state=0, fade_delay=2, background=False)
 					return True
 			else:
 				self.disp_text('Crusher not set')
