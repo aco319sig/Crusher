@@ -26,7 +26,7 @@ class Robot:
 		self.start_button = Button(start_pin)
 		self.estop_button = Button(e_stop_pin)
 		self.lid_safe = Button(lid_pin)
-		self.led = PWMLED(pin=led_pin, initial_value=0.2)
+		self.led = PWMLED(pin=led_pin, initial_value=0)
 		self.lcd = drivers.Lcd()
 		self.all_stop = False
 
@@ -208,7 +208,6 @@ class Robot:
 				first_lid = self.lid_safe.value
 				sleep(0.01)
 				second = self.start_button.value
-				second_lid = self.lid_safe.value
 				if first and not second:
 					self.disp_text('Start Pressed')
 				elif not first and second:
@@ -220,7 +219,8 @@ class Robot:
 					self.fade_led(state=1, fade_delay=2, background=False)
 				elif self.lid_safe.value:
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
-					self.fade_led(state=0, fade_delay=2, background=False)
+					if self.led.value:
+						self.fade_led(state=0, fade_delay=2, background=False)
 
 		except KeyboardInterrupt:
 			self.disp_text('Program Stop', 'By KBI', j2='c')
