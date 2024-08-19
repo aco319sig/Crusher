@@ -193,11 +193,10 @@ class Robot:
 				self.lcd.lcd_backlight(1)
 				sleep(0.2)
 		sleep(3)
-		self.disp_text('Power Cycle to', 'Continue', j1='c', j2='c')
+		self.disp_text('Press Start to', 'Continue', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
 		self.fade_led(state=0, fade_delay=4, background=False)
 		sleep(1)
-		sys.exit()
 
 	def cycle(self):
 		if not self.r_limit.is_pressed:
