@@ -197,16 +197,9 @@ class Robot:
 		print("Emergency Stop Pressed!")
 		self.fade_led(state=0, fade_delay=4, background=False)
 		sleep(1)
-		wait_variable = True
-		while wait_variable:
-			if self.start_button.value:
-				self.all_stop = False
-				self.disp_text('Restarting', 'Cycle', j1='c', j2='c')
-				sleep(3)
-				wait_variable = False
-			elif self.estop_button.value:
-				self.disp_text('Power Cycle to', 'Restart', j1='c', j2='c')
-				sys.exit()
+		self.start_button.wait_for_press()
+		self.disp_text('Restarting', 'Cycle', j1='c', j2='c')
+		sleep(3)
 		self.cycle()
 
 
