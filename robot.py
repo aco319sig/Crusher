@@ -206,18 +206,19 @@ class Robot:
 			while True:
 				first = self.start_button.value
 				first_lid = self.lid_safe.value
-				sleep(0.01)
+				sleep(0.05)
 				second = self.start_button.value
+				second_lid = self.lid_safe.value
 				if first and not second:
 					self.disp_text('Start Pressed')
 				elif not first and second:
 					self.disp_text(l2='Start released!', cl=False)
 					self._crush()
 					self.fade_led(state=0, fade_delay=2, background=True)
-				elif not self.lid_safe.value:
+				elif first_lid and not second_lid:
 					self.disp_text('Lid Open!')
 					self.fade_led(state=1, fade_delay=2, background=False)
-				elif self.lid_safe.value:
+				elif not first_lid and second_lid:
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 					if self.led.value:
 						self.fade_led(state=0, fade_delay=2, background=False)
