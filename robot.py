@@ -193,18 +193,10 @@ class Robot:
 				self.lcd.lcd_backlight(1)
 				sleep(0.2)
 		sleep(3)
-		self.disp_text('Start=Reset', 'Stop=Exit Script', j1='c', j2='c')
+		self.disp_text('Power Cycle', 'to Restart', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
 		self.fade_led(state=0, fade_delay=4, background=False)
-		sleep(1)
-		self.start_button.wait_for_press()
-		print('Start Pressed')
-		self.all_stop = False
-		self.disp_text('Restarting', 'Cycle', j1='c', j2='c')
-		sleep(3)
-		print('restarting cycle')
-		self.cycle()
-
+		sys.exit()
 
 	def cycle(self):
 		if not self.r_limit.is_pressed:
