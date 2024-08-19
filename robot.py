@@ -214,7 +214,7 @@ class Robot:
 				elif not first and second:
 					self.disp_text(l2='Start released!', cl=False)
 					self._crush()
-				elif self.lid_safe.value:
+				elif not self.lid_safe.value:
 					while not self.lid_safe.is_pressed:
 						self.disp_text('Lid Open!')
 						self.fade_led(state=1, fade_delay=2, background=False)
