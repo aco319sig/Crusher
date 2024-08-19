@@ -193,25 +193,33 @@ class Robot:
 				self.lcd.lcd_backlight(1)
 				sleep(0.2)
 		sleep(3)
-		self.disp_text('Press Start to', 'Continue', j1='c', j2='c')
+		self.disp_text('Start=Reset', 'Stop=Exit Script', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
 		self.fade_led(state=0, fade_delay=4, background=False)
 		sleep(1)
-		wait_variable = True
-		while wait_variable:
-			if self.start_button.value:
-				self.all_stop = False
-				self.disp_text('Restarting', 'Cycle', j1='c', j2='c')
-				sleep(3)
-				wait_variable = False
-			elif self.estop_button.value:
-				self.disp_text('Power Cycle to', 'Restart', j1='c', j2='c')
-				sys.exit()
-		self.cycle()
+		try:
+			wait_variable = True
+			while wait_variable:
+				if self.start_button.value:
+					self.all_stop = False
+					self.disp_text('Restarting', 'Cycle', j1='c', j2='c')
+					sleep(3)
+					wait_variable = False
+				elif self.estop_button.value:
+					self.disp_text('Power Cycle to', 'Restart', j1='c', j2='c')
+					sys.exit()
+			self.cycle()
+		except KeyboardInterrupt:
+			self.disp_text('Program Stop', 'By KBI', j2='c')
+			self.motor.stop()
+			self.disp_text('Power Cycle to', 'Continue', j1='c', j2='c')
+			sys.exit()
 
 	def cycle(self):
 		if not self.r_limit.is_pressed:
 			self.home()
+			sleep(1)
+			self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 
 		try:
 			while True:
