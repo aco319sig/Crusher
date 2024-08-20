@@ -209,6 +209,7 @@ class Robot:
 		sys.exit()
 
 	def cycle(self):
+		self.lcd.lcd_backlight(1)
 		if not self.r_limit.is_pressed:
 			self.home()
 			sleep(1)
@@ -216,19 +217,19 @@ class Robot:
 
 		try:
 			while True:
-				bg_delay = ti() + 60
+				bg_delay = ti() + 15
 				first = self.start_button.value
 				sleep(0.05)
 				second = self.start_button.value
 				if first and not second:
 					self.lcd.lcd_backlight(1)
-					bg_delay = ti() + 60
+					bg_delay = ti() + 15
 					self.disp_text('Start Pressed')
 				elif not first and second:
 					self.disp_text(l2='Start released!', cl=False)
 					sleep(0.3)
 					self._crush()
-					bg_delay = ti() + 60
+					bg_delay = ti() + 15
 				elif not self.lid_safe.value:
 					self.lcd.lcd_backlight(1)
 					self.disp_text('Lid Open!')
@@ -237,10 +238,9 @@ class Robot:
 							self.fade_led(state=1, fade_delay=2, background=False)
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 					self.fade_led(state=0, fade_delay=2, background=False)
-					bg_delay = ti() + 60
+					bg_delay = ti() + 15
 				elif ti() > bg_delay:
 					self.lcd.lcd_backlight(0)
-
 
 		except KeyboardInterrupt:
 			self.disp_text('Program Stop', 'By KBI', j2='c')
