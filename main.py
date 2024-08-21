@@ -25,31 +25,31 @@ led_p = 26
 
 
 def main():
-	dave = R.Robot(crush_pin=motor_fwd_pin, retract_pin=motor_rev_pin, crush_limit=c_l_pin, retract_limit=r_l_pin, start_pin=s_pin, e_stop_pin=e_pin, lid_pin=l_pin, led_pin=led_p)
-	dave.disp_text('POST Complete')
+	HAL = R.Robot(crush_pin=motor_fwd_pin, retract_pin=motor_rev_pin, crush_limit=c_l_pin, retract_limit=r_l_pin, start_pin=s_pin, e_stop_pin=e_pin, lid_pin=l_pin, led_pin=led_p)
+	HAL.disp_text('POST Complete')
 	sleep(1)
-	host_ip = dave.get_ip()
-	dave.disp_text('Host IP:', str(host_ip), j1='c', j2='c')
-	dave.estop_button.when_pressed = dave.e_stop
+	host_ip = HAL.get_ip()
+	HAL.disp_text('Host IP:', str(host_ip), j1='c', j2='c')
+	HAL.estop_button.when_pressed = HAL.e_stop
 	sleep(5)
 
-	if dave.crush_motor_test():
-		if not dave.retract_motor_test():
-			dave.disp_text(l1='ERROR', j1='c', l2='COULD NOT HOME!')
-	if not dave.home():
-		dave.disp_text(l1='ERROR', j1='c', l2='COULD NOT HOME!')
+	if HAL.crush_motor_test():
+		if not HAL.retract_motor_test():
+			HAL.disp_text(l1='ERROR', j1='c', l2='COULD NOT HOME!')
+	if not HAL.home():
+		HAL.disp_text(l1='ERROR', j1='c', l2='COULD NOT HOME!')
 		n = 10
 		while n > 0:
-			dave.disp_text(cl=False, bkon=False)
+			HAL.disp_text(cl=False, bkon=False)
 			sleep(0.3)
-			dave.disp_text(cl=False)
+			HAL.disp_text(cl=False)
 			sleep(0.3)
 			n = n - 1
 		sleep(2)
-		dave.disp_text('Power cycle', 'to reset')
+		HAL.disp_text('Power cycle', 'to reset')
 	else:
-		dave.disp_text('Press Start', 'to begin...', j1='c', j2='c')
-		dave.cycle()
+		HAL.disp_text('Press Start', 'to begin...', j1='c', j2='c')
+		HAL.cycle()
 
 if __name__ == "__main__":
 	main()

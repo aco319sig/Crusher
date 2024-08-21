@@ -5,7 +5,7 @@
 # retract_motor = DOD(24, active_high=True, initial_value=False)
 
 from time import sleep
-from gpiozero import Button, LED, Motor
+from gpiozero import Button, PWMLED, Motor
 
 crush_motor = Motor(forward=23, backward=24)
 crush_limit = Button(17)
@@ -13,7 +13,7 @@ retract_limit = Button(25)
 lid_safety = Button(4)
 start_button = Button(16)
 e_stop = Button(12)
-action_LED = LED(26)
+action_LED = PWMLED(26)
 disp_sda = 2
 disp_scl = 3
 

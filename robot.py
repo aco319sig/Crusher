@@ -31,12 +31,19 @@ class Robot:
 		self.all_stop = False
 
 	def fade_led(self, state, fade_delay=2, background=True):
+		# state=<desired end-state of LED>, fade_delay=<seconds>, background=<True=return success immediately, False=Wait until fade is complete>
 		if state == 1:
-			self.led.blink(on_time=0, off_time=0, fade_in_time=fade_delay, fade_out_time=0, n=1, background=background)
-			self.led.on()
+			if self.led.is_lit:
+				pass
+			else:
+				self.led.blink(on_time=0, off_time=0, fade_in_time=fade_delay, fade_out_time=0, n=1, background=background)
+				self.led.on()
 		elif state == 0:
-			self.led.blink(on_time=0, off_time=0, fade_in_time=0, fade_out_time=fade_delay, n=1, background=background)
-			self.led.off()
+			if not self.led.is_lit:
+				pass
+			else:
+				self.led.blink(on_time=0, off_time=0, fade_in_time=0, fade_out_time=fade_delay, n=1, background=background)
+				self.led.off()
 
 	def disp_text(self, l1='skip', l2='skip', j2='l', j1='l', cl=True, bkon=True):
 		if cl:
@@ -168,7 +175,7 @@ class Robot:
 				sleep(0.5)
 				if self.home():
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
-					self.fade_led(state=0, fade_delay=2, background=False)
+					self.fade_led(state=0, fade_delay=2, background=True)
 					return True
 			else:
 				self.disp_text('Crusher not set')
@@ -205,8 +212,8 @@ class Robot:
 		sleep(3)
 		self.disp_text('Power Cycle', 'to Restart', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
-		self.fade_led(state=0, fade_delay=4, background=False)
-		sys.exit()
+		self.fade_led(state=0, fade_delay=4, background=True)
+		sys.exit(1)
 
 	def cycle(self):
 		if not self.r_limit.is_pressed:
@@ -216,6 +223,8 @@ class Robot:
 
 		try:
 			while True:
+				if self.all_stop:
+					break
 				first = self.start_button.value
 				sleep(0.05)
 				second = self.start_button.value
