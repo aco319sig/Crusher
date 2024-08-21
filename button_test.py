@@ -13,11 +13,9 @@ retract_limit = Button(25)
 lid_safety = Button(4)
 start_button = Button(16)
 e_stop = Button(12)
-action_LED = PWMLED(26)
+led = PWMLED(26)
 disp_sda = 2
 disp_scl = 3
-
-# power_LED = LED() # 3.3v at BOARD 17
 
 def crush_motor_test():
 	if not crush_limit.is_pressed:
@@ -44,42 +42,56 @@ def switch_test():
 		while True:
 			if retract_limit.is_pressed:
 				print("retract_limit Pressed")
-				action_LED.blink(on_time=0.2, off_time=0.2, background=True)
+				led.blink(on_time=0.2, off_time=0.2, background=True)
 				sleep(2)
-				action_LED.off()
+				led.off()
 			elif crush_limit.is_pressed:
 				print("crush_limit Pressed")
-				action_LED.blink(on_time=0.2, off_time=0.5, background=True)
+				led.blink(on_time=0.2, off_time=0.5, background=True)
 				sleep(2)
-				action_LED.off()
+				led.off()
 			elif lid_safety.is_pressed:
 				print("lid_safety Pressed")
-				action_LED.blink(on_time=0.5, off_time=0.2, background=True)
+				led.blink(on_time=0.5, off_time=0.2, background=True)
 				sleep(2)
-				action_LED.off()
+				led.off()
 			elif start_button.is_pressed:
 				print("start_button Pressed")
-				action_LED.blink(on_time=0.5, off_time=0.5, background=True)
+				led.blink(on_time=0.5, off_time=0.5, background=True)
 				sleep(2)
-				action_LED.off()
+				led.off()
 			elif e_stop.is_pressed:
 				print("e_stop Pressed")
-				action_LED.blink(on_time=0.1, off_time=0.1, background=True)
+				led.blink(on_time=0.1, off_time=0.1, background=True)
 				sleep(2)
-				action_LED.off()
+				led.off()
 	except KeyboardInterrupt:
 		# If there is a KeyboardInterrupt (when you press ctrl+c), exit the program and cleanup
 		print("Cleaning up!")
 		sleep(3)
 
-print("Starting Test")
-sleep(2)
-print("Ready!")
-if crush_motor_test():
-	if retract_motor_test():
-		switch_test()
-	else:
-		print("See Error above:")
-else:
-	print("See Error above:")
+def fade_led(state, fade_delay=2, background=True):
+	# state=<desired end-state of LED>, fade_delay=<seconds>, background=<True=return success immediately, False=Wait until fade is complete>
+	if state == 1:
+		if led.is_lit:
+			pass
+		else:
+			led.blink(on_time=0, off_time=0, fade_in_time=fade_delay, fade_out_time=0, n=1, background=background)
+			led.on()
+	elif state == 0:
+		if not led.is_lit:
+			pass
+		else:
+			led.blink(on_time=0, off_time=0, fade_in_time=0, fade_out_time=fade_delay, n=1, background=background)
+    
+# print("Starting Test")
+# sleep(2)
+# print("Ready!")
+# if crush_motor_test():
+# 	if retract_motor_test():
+# 		switch_test()
+# 	else:
+# 		print("See Error above:")
+# else:
+# 	print("See Error above:")
 
