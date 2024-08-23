@@ -26,7 +26,7 @@ class Robot:
 		self.start_button = Button(start_pin)
 		self.estop_button = Button(e_stop_pin)
 		self.lid_safe = Button(lid_pin)
-		self.led = PWMLED(pin=led_pin, initial_value=0)
+		self.led = PWMLED(pin=led_pin, initial_value=0.2)
 		self.lcd = drivers.Lcd()
 		self.all_stop = False
 
