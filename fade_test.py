@@ -5,32 +5,25 @@ factory = PiGPIOFactory()
 led_pin = 19
 led = PWMLED(pin=led_pin, initial_value=0.2, pin_factory=factory)
 
-def fade_to_full(led, start_value=0.5, duration=2, steps=25):
+def fade_led(led, on=True, duration=2, steps=25):
     """
-    Fade a PWMLED from a partial brightness to full brightness.
+    Fade a PWMLED to either full brightness or off.
     
-    Parameters:
-    - led: PWMLED object
-    - start_value: Initial brightness (0.0 to 1.0), default is 0.5
-    - duration: Total time for the fade in seconds, default is 2
-    - steps: Number of steps in the fade, default is 100
+    :param led: PWMLED object
+    :param on: Boolean, True to fade to full brightness, False to fade to off
+    :param duration: Total duration of the fade in seconds (default 1 second)
+    :param steps: Number of steps in the fade (default 100)
     """
+    start_value = led.value
+    end_value = 1 if on else 0
     
-    # Ensure start_value is between 0 and 1
-    start_value = max(0, min(start_value, 1))
+    step_time = duration / steps
+    value_change = (end_value - start_value) / steps
     
-    # Calculate the step size and delay
-    step_size = (1 - start_value) / steps
-    delay = duration / steps
-    
-    # Set the initial value
-    led.value = start_value
-    
-    # Fade to full brightness
     for _ in range(steps):
-        led.value += step_size
-        sleep(delay)
+        led.value += value_change
+        sleep(step_time)
     
-    # Ensure the LED is at full brightness
-    led.value = 1
+    # Ensure final value is exactly what we want
+    led.value = end_value
 
