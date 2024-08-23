@@ -33,27 +33,20 @@ class Robot:
 		self.lcd = drivers.Lcd()
 		self.all_stop = False
 
-	def fade_led(self, on, fade_delay=2, steps=25, background=True):
-		# on=<True=on, False=off>, fade_delay=<seconds>, background=<True=return success immediately, False=Wait until fade is complete>
+	def fade_led(self, on, fade_delay=2, steps=50):
+		# on=<True=on, False=off>, fade_delay=<seconds>, fade_delay / steps = frame rate
 		end_value = 1 if on else 0
 		if self.led.value == end_value:
 			return
 		
 		start_value = self.led.value
-		if not self.led.value == 1 and not self.led.value == 0:
-			start_value = self.led.value
-			step_time = fade_delay / steps
-			value_change = (end_value - start_value) / steps
+		step_time = fade_delay / steps
+		value_change = (end_value - start_value) / steps
 
-			for _ in range(steps):
-				new_value = self.led.value + value_change
-				self.led.value = max(0, min(1, new_value))
-				sleep(step_time)
-		else:
-			if on:
-				self.led.blink(on_time=0, off_time=0, fade_in_time=fade_delay, fade_out_time=0, n=1, background=background)
-			else:
-				self.led.blink(on_time=0, off_time=0, fade_in_time=0, fade_out_time=fade_delay, n=1, background=background)
+		for _ in range(steps):
+			new_value = self.led.value + value_change
+			self.led.value = max(0, min(1, new_value))
+			sleep(step_time)
 		
 		self.led.value = end_value
 
@@ -145,14 +138,14 @@ class Robot:
 		delay = ti() + n
 		if not self.lid_safe.is_pressed:
 			self.disp_text('Close Lid!!')
-			self.fade_led(on=True, fade_delay=2, background=True)
+			self.fade_led(on=True, fade_delay=2)
 			while not self.lid_safe.is_pressed:
 				sleep(0.25)
 				if ti() > delay:
 					self.disp_text(cl=False, l2='Timeout = 10 sec')
 					return False
 			self.disp_text(cl=False, l2='Lid is closed')
-			self.fade_led(on=False, fade_delay=2, background=False)
+			self.fade_led(on=False, fade_delay=2)
 			sleep(0.5)
 			return True
 		else:
@@ -163,7 +156,7 @@ class Robot:
 			if not self.c_limit.is_pressed:
 				delay = ti() + 30
 				self.disp_text('Crushing...')
-				self.fade_led(on=True, fade_delay=1, background=False)
+				self.fade_led(on=True, fade_delay=1)
 				self.motor.forward()
 				while not self.c_limit.is_pressed:
 					if ti() > delay:
@@ -188,14 +181,14 @@ class Robot:
 				sleep(0.5)
 				if self.home():
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
-					self.fade_led(on=False, fade_delay=2, background=True)
+					self.fade_led(on=False, fade_delay=2)
 					return True
 			else:
 				self.disp_text('Crusher not set')
 				sleep(0.5)
 				if self.home():
 					self.disp_text('Press Start', 'Again!', j1='c', j2='c')
-					self.fade_led(on=False, fade_delay=2, background=False)
+					self.fade_led(on=False, fade_delay=2)
 				else:
 					self.disp_text('Check for Jam!')
 					sleep(1)
@@ -225,7 +218,7 @@ class Robot:
 		sleep(3)
 		self.disp_text('Power Cycle', 'to Restart', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
-		self.fade_led(on=False, fade_delay=4, background=True)
+		self.fade_led(on=False, fade_delay=4)
 		sys.exit(1)
 
 	def cycle(self):
@@ -251,9 +244,9 @@ class Robot:
 					self.disp_text('Lid Open!')
 					while not self.lid_safe.is_pressed:
 						if not self.led.is_active:
-							self.fade_led(on=True, fade_delay=2, background=False)
+							self.fade_led(on=True, fade_delay=2)
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
-					self.fade_led(on=False, fade_delay=2, background=False)
+					self.fade_led(on=False, fade_delay=2)
 
 		except KeyboardInterrupt:
 			self.disp_text('Program Stop', 'By KBI', j2='c')
