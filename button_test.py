@@ -70,25 +70,19 @@ def switch_test():
 		print("Cleaning up!")
 		sleep(3)
 
-def fade_led(state, fade_delay=2, background=True):
-	# state=<desired end-state of LED>, fade_delay=<seconds>, background=<True=return success immediately, False=Wait until fade is complete>
-	if state == 1:
-		if led.value == 1:
-			pass
-		else:
-			fade_delay = fade_delay * led.value
-			led.blink(on_time=0, off_time=0, fade_in_time=fade_delay, fade_out_time=0, n=1, background=background)
-			led.on()
-	elif state == 0:
-		if not led.is_lit:
-			pass
-		else:
-			fade_delay = fade_delay * led.value
-			led.blink(on_time=0, off_time=0, fade_in_time=0, fade_out_time=fade_delay, n=1, background=background)
+def fade_led(led, on, duration=2, steps=25):
+	start_value = led.value
+	end_value = 1 if on else 0
+	if not start_value == end_value:
+		step_time = duration / steps
+		value_change = (end_value - start_value) / steps
+		for _ in range(steps):
+			new_value = led.value + value_change
+			led.value = max(0, min(1, new_value))
+			sleep(step_time)
+		led.value = end_value
 
-		
 
-    
 # print("Starting Test")
 # sleep(2)
 # print("Ready!")
