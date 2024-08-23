@@ -1,7 +1,11 @@
 from gpiozero import PWMLED
+from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
+factory = PiGPIOFactory()
+led_pin = 19
+led = PWMLED(pin=led_pin, initial_value=0.2, pin_factory=factory)
 
-def fade_to_full(led, start_value=0.5, duration=2, steps=100):
+def fade_to_full(led, start_value=0.5, duration=2, steps=25):
     """
     Fade a PWMLED from a partial brightness to full brightness.
     
@@ -29,3 +33,4 @@ def fade_to_full(led, start_value=0.5, duration=2, steps=100):
     
     # Ensure the LED is at full brightness
     led.value = 1
+
