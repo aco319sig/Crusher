@@ -29,7 +29,7 @@ class Robot:
 		self.estop_button = Button(e_stop_pin)
 		self.lid_safe = Button(lid_pin)
 		self.factory = PiGPIOFactory()
-		self.led = PWMLED(pin=led_pin, initial_value=0.2, pin_factory=self.factory)
+		self.led = PWMLED(pin=led_pin, initial_value=0.1, pin_factory=self.factory)
 		self.lcd = drivers.Lcd()
 		self.all_stop = False
 
