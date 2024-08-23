@@ -22,7 +22,6 @@ def fade_led(led, on=True, duration=2, steps=25):
     
     for _ in range(steps):
         new_value = led.value + value_change
-        led.value += value_change
         led.value = max(0, min(1, new_value))
         sleep(step_time)
     
