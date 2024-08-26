@@ -219,7 +219,7 @@ class Robot:
 	def reset_pi(self):
 		print("Resetting...")
 		self.disp_text('RESETTING...')
-		sleep(1)
+		sleep(5)
 		bus = SystemBus()
 		systemd = bus.get(".systemd1")
 		systemd.RestartUnit("crusher.service", "fail")
