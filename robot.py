@@ -226,6 +226,7 @@ class Robot:
 		if not self.r_limit.is_pressed:
 			self.home()
 			sleep(1)
+			self.fade_led(False, fade_delay=2)
 			self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 
 		try:
@@ -244,8 +245,7 @@ class Robot:
 				elif not self.lid_safe.value:
 					self.disp_text('Lid Open!')
 					while not self.lid_safe.is_pressed:
-						if not self.led.is_active:
-							self.fade_led(on=True, fade_delay=2)
+						self.fade_led(on=True, fade_delay=2)
 					self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
 					self.fade_led(on=False, fade_delay=2)
 
