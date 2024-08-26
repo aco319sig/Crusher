@@ -175,6 +175,7 @@ class Robot:
 						self.disp_text(cl=False, l2='Lid is closed')
 						sleep(0.5)
 						self.disp_text(l1='Lid is closed', l2='Continuing', j2='r')
+						self.motor.forward()
 					sleep(0.2)
 				self.motor.stop()
 				self.disp_text(cl=False, l2='...Done!', j2='r')
