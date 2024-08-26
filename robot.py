@@ -168,8 +168,8 @@ class Robot:
 					elif not self.lid_safe.is_pressed:
 						self.motor.stop()
 						self.disp_text('Close Lid!!')
-						stop_time = round(delay - ti())
-						time_left = str('Timeout in: ' + stop_time, 's')
+						stop_time = str(round(delay - ti()))
+						time_left = 'Timeout in: ' + stop_time, 's'
 						self.disp_text(cl=False, l2=time_left)
 						while not self.lid_safe.is_pressed:
 							if ti() > delay:
