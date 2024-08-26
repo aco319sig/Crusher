@@ -210,6 +210,7 @@ class Robot:
 		bus = SystemBus()
 		systemd = bus.get(".systemd1")
 		systemd.RestartUnit("crusher.service", "fail")
+		sys.exit()
 
 	def e_stop(self):
 		delay = ti() + 3
@@ -225,11 +226,10 @@ class Robot:
 				sleep(0.2)
 				self.lcd.lcd_backlight(1)
 				sleep(0.2)
-		sleep(3)
+		sleep(10)
 		self.disp_text('Power Cycle', 'to Restart', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
 		self.fade_led(on=False, fade_delay=4)
-		self.reset_pi()
 
 	def cycle(self):
 		if not self.r_limit.is_pressed:
@@ -241,7 +241,7 @@ class Robot:
 		try:
 			while True:
 				if self.all_stop:
-					break
+					self.reset_pi()
 				first = self.start_button.value
 				sleep(0.05)
 				second = self.start_button.value
