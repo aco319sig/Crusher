@@ -151,10 +151,10 @@ class Robot:
 		else:
 			return True
 
-	def _crush(self):
+	def _crush(self, n=31):
 		if self.lid_check(10):
 			if not self.c_limit.is_pressed:
-				delay = ti() + 30
+				delay = ti() + n
 				self.disp_text('Crushing...')
 				self.fade_led(on=True, fade_delay=1)
 				self.motor.forward()
@@ -168,11 +168,16 @@ class Robot:
 					elif not self.lid_safe.is_pressed:
 						self.motor.stop()
 						self.disp_text('Close Lid!!')
+						stop_time = round(delay - ti())
+						time_left = str('Timeout in: ' + stop_time, 's')
+						self.disp_text(cl=False, l2=time_left)
 						while not self.lid_safe.is_pressed:
 							if ti() > delay:
-								self.disp_text(cl=False, l2='Timeout = 10 sec')
+								self.disp_text(cl=False, l2='Timed out!', j2='c')
 								return False
+							sleep(0.5)
 						self.disp_text(cl=False, l2='Lid is closed')
+						delay = ti() + stop_time
 						sleep(0.5)
 						self.disp_text(l1='Lid is closed', l2='Continuing', j2='r')
 						self.motor.forward()
