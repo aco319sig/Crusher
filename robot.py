@@ -126,6 +126,8 @@ class Robot:
 					self.disp_text('Check for Jam', 'or Brkn switch!')
 					return False
 				elif self.all_stop:
+					self.motor.stop()
+					sleep(5)
 					break
 				else:
 					sleep(0.2)
@@ -148,6 +150,7 @@ class Robot:
 					self.disp_text(cl=False, l2='Timeout = 10 sec')
 					return False
 				elif self.all_stop:
+					sleep(5)
 					break
 			self.disp_text(cl=False, l2='Lid is closed')
 			self.fade_led(on=False, fade_delay=2)
@@ -188,6 +191,8 @@ class Robot:
 						self.disp_text(l1='Lid is closed', l2='Continuing', j2='r')
 						self.motor.forward()
 					elif self.all_stop:
+						self.motor.stop()
+						sleep(5)
 						break
 					sleep(0.2)
 				self.motor.stop()
@@ -252,6 +257,7 @@ class Robot:
 		try:
 			while True:
 				if self.all_stop:
+					sleep(5)
 					break
 				first = self.start_button.value
 				sleep(0.05)
