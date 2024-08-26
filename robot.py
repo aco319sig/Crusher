@@ -127,8 +127,8 @@ class Robot:
 					return False
 				elif self.all_stop:
 					self.motor.stop()
-					sleep(20)
-					return
+					sleep(30)
+					return False
 				else:
 					sleep(0.2)
 			self.motor.stop()
@@ -150,7 +150,7 @@ class Robot:
 					self.disp_text(cl=False, l2='Timeout = 10 sec')
 					return False
 				elif self.all_stop:
-					sleep(20)
+					sleep(30)
 					return
 			self.disp_text(cl=False, l2='Lid is closed')
 			self.fade_led(on=False, fade_delay=2)
@@ -167,7 +167,11 @@ class Robot:
 				self.fade_led(on=True, fade_delay=1)
 				self.motor.forward()
 				while not self.c_limit.is_pressed:
-					if ti() > delay:
+					if self.all_stop:
+						self.motor.stop()
+						sleep(30)
+						return False
+					elif ti() > delay:
 						self.motor.stop()
 						self.disp_text('Crush took', 'too long!')
 						sleep(3)
@@ -190,10 +194,6 @@ class Robot:
 						sleep(0.5)
 						self.disp_text(l1='Lid is closed', l2='Continuing', j2='r')
 						self.motor.forward()
-					elif self.all_stop:
-						self.motor.stop()
-						sleep(20)
-						return
 					sleep(0.2)
 				self.motor.stop()
 				self.disp_text(cl=False, l2='...Done!', j2='r')
@@ -217,9 +217,7 @@ class Robot:
 			return False
 
 	def reset_pi(self):
-		self.disp_text(l1='To reset Crusher', l2='Press Start', j1='c', j2='c')
-		print("Press Start to reset...")
-		self.start_button.wait_for_press()
+		print("Resetting...")
 		self.disp_text('RESETTING...')
 		sleep(1)
 		bus = SystemBus()
@@ -244,13 +242,13 @@ class Robot:
 				sleep(0.2)
 		self.disp_text('Resetting', 'in 10 seconds', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
-		sleep(5)
+		sleep(2)
 		self.fade_led(on=False, fade_delay=4)
 		self.all_stop = False
 		self.reset_pi()
 
 	def cycle(self):
-		if not self.r_limit.is_pressed:
+		if not self.r_limit.is_pressed and not self.all_stop:
 			self.home()
 			sleep(1)
 			self.fade_led(False, fade_delay=2)
@@ -259,7 +257,7 @@ class Robot:
 		try:
 			while True:
 				if self.all_stop:
-					sleep(20)
+					sleep(30)
 					return
 				first = self.start_button.value
 				sleep(0.05)
@@ -284,4 +282,4 @@ class Robot:
 		except KeyboardInterrupt:
 			self.disp_text('Program Stop', 'By KBI', j2='c')
 			self.motor.stop()
-			self.disp_text('Power Cycle to', 'Continue', j1='c', j2='c')
+			self.disp_text('Restart Svc', 'To Continue', j1='c', j2='c')
