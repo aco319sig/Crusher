@@ -51,6 +51,7 @@ def main():
 		HAL.disp_text('Power cycle', 'to reset')
 	else:
 		HAL.disp_text('Press Start', 'to begin...', j1='c', j2='c')
+		HAL.fade_led(False)
 		HAL.cycle()
 
 if __name__ == "__main__":
