@@ -173,7 +173,8 @@ class Robot:
 						self.disp_text(cl=False, l2=time_left)
 						while not self.lid_safe.is_pressed:
 							if ti() > delay:
-								self.disp_text(cl=False, l2='Timed out!', j2='c')
+								self.disp_text(cl=True, l1='Timed out!', l2='Re-homing...', j1='c', j2='c')
+								sleep(1)
 								return False
 							sleep(0.5)
 						self.disp_text(cl=False, l2='Lid is closed')
@@ -246,7 +247,10 @@ class Robot:
 				elif not first and second:
 					self.disp_text(l2='Start released!', cl=False)
 					sleep(0.3)
-					self._crush()
+					if not self._crush():
+						self.home()
+						self.disp_text('Press Start', 'to begin...', j1='c', j2='c')
+						self.fade_led(on=False, fade_delay=2)
 				elif not self.lid_safe.value:
 					self.disp_text('Lid Open!')
 					while not self.lid_safe.is_pressed:
