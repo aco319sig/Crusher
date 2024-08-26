@@ -21,7 +21,7 @@ r_l_pin = 25
 l_pin = 4
 s_pin = 16
 e_pin = 12
-led_p = 26
+led_p = 19
 
 
 def main():
