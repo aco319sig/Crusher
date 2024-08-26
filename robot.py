@@ -1,5 +1,5 @@
 from gpiozero import Button, Motor, PWMLED
-# from gpiozero.pins.pigpio import PiGPIOFactory
+from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
 import drivers, socket, sys
 from time import time as ti
@@ -28,8 +28,8 @@ class Robot:
 		self.start_button = Button(start_pin)
 		self.estop_button = Button(e_stop_pin)
 		self.lid_safe = Button(lid_pin)
-		# self.factory = PiGPIOFactory()
-		self.led = PWMLED(pin=led_pin, initial_value=0.1) # , pin_factory=self.factory
+		self.factory = PiGPIOFactory()
+		self.led = PWMLED(pin=led_pin, initial_value=0.1, pin_factory=self.factory)
 		self.lcd = drivers.Lcd()
 		self.all_stop = False
 
