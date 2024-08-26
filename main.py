@@ -36,8 +36,6 @@ def main():
 	if HAL.crush_motor_test():
 		if not HAL.retract_motor_test():
 			HAL.disp_text(l1='ERROR', j1='c', l2='COULD NOT HOME!')
-	# HAL.disp_text("Don't Forget", 'Chge LED PIN', j1='c', j2='c')
-	# sleep(20)
 	if not HAL.home():
 		HAL.disp_text(l1='ERROR', j1='c', l2='COULD NOT HOME!')
 		n = 10

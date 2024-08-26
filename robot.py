@@ -3,6 +3,7 @@ from gpiozero.pins.pigpio import PiGPIOFactory
 from time import sleep
 import drivers, socket, sys
 from time import time as ti
+from pydbus import SystemBus
 
 class Robot:
 	"""Creates Robot Class
@@ -206,7 +207,9 @@ class Robot:
 
 	def reset_pi(self):
 		self.disp_text('RESETTING...')
-		sys.exit()
+		bus = SystemBus()
+		systemd = bus.get(".systemd1")
+		systemd.RestartUnit("crusher.service", "fail")
 
 	def e_stop(self):
 		delay = ti() + 3
@@ -226,7 +229,7 @@ class Robot:
 		self.disp_text('Power Cycle', 'to Restart', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
 		self.fade_led(on=False, fade_delay=4)
-		sys.exit(1)
+		self.reset_pi()
 
 	def cycle(self):
 		if not self.r_limit.is_pressed:
