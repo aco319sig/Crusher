@@ -217,9 +217,11 @@ class Robot:
 			return False
 
 	def reset_pi(self):
+		self.disp_text(l1='To reset Crusher', l2='Press Start', j1='c', j2='c')
+		print("Press Start to reset...")
+		self.start_button.wait_for_press()
 		self.disp_text('RESETTING...')
-		print("resetting in 2 seconds")
-		sleep(2)
+		sleep(1)
 		bus = SystemBus()
 		systemd = bus.get(".systemd1")
 		systemd.RestartUnit("crusher.service", "fail")
