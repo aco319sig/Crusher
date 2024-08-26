@@ -207,9 +207,12 @@ class Robot:
 
 	def reset_pi(self):
 		self.disp_text('RESETTING...')
+		print("resetting in 2 seconds")
+		sleep(2)
 		bus = SystemBus()
 		systemd = bus.get(".systemd1")
 		systemd.RestartUnit("crusher.service", "fail")
+		print("reset command sent")
 		sys.exit()
 
 	def e_stop(self):
@@ -226,9 +229,9 @@ class Robot:
 				sleep(0.2)
 				self.lcd.lcd_backlight(1)
 				sleep(0.2)
-		sleep(10)
-		self.disp_text('Power Cycle', 'to Restart', j1='c', j2='c')
+		self.disp_text('Resetting', 'in 10 seconds', j1='c', j2='c')
 		print("Emergency Stop Pressed!")
+		sleep(10)
 		self.fade_led(on=False, fade_delay=4)
 
 	def cycle(self):
@@ -241,6 +244,7 @@ class Robot:
 		try:
 			while True:
 				if self.all_stop:
+					self.all_stop = False
 					self.reset_pi()
 				first = self.start_button.value
 				sleep(0.05)
