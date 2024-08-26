@@ -169,7 +169,7 @@ class Robot:
 						self.motor.stop()
 						self.disp_text('Close Lid!!')
 						stop_time = str(round(delay - ti()))
-						time_left = 'Timeout in: ' + stop_time, 's'
+						time_left = 'Timeout in: ' + stop_time + 's'
 						self.disp_text(cl=False, l2=time_left)
 						while not self.lid_safe.is_pressed:
 							if ti() > delay:
@@ -177,7 +177,7 @@ class Robot:
 								return False
 							sleep(0.5)
 						self.disp_text(cl=False, l2='Lid is closed')
-						delay = ti() + stop_time
+						delay = ti() + int(stop_time)
 						sleep(0.5)
 						self.disp_text(l1='Lid is closed', l2='Continuing', j2='r')
 						self.motor.forward()
